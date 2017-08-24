@@ -1,4 +1,4 @@
-import { PhysicsManager } from "./physics/physics.manager";
+import { PhysicsManager } from "./physics/PhysicsManager";
 
 console.log("This is the main file!");
 

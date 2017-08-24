@@ -15,6 +15,8 @@ export class PhysicsManager {
         );
 
         // Test for collisions
+        let allObjects = this.activeObjects.concat(this.inactiveObject);
 
+        
     }
 }

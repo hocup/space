@@ -1,5 +1,6 @@
 import { Point2d } from "../../math2d/Point2d";
 import { BoundingBox } from "../classes/BoundingBox";
+import { ICollider } from "./ICollider";
 
 export interface IPhysicsObject {
 
@@ -11,5 +12,5 @@ export interface IPhysicsObject {
 
     mass: number;
 
-    getBoundingBox(): BoundingBox;
+    collider: ICollider;
 }
