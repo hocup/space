@@ -2,8 +2,8 @@ import { IPhysicsObject } from "./interfaces/IPhysicsObject";
 
 export class PhysicsManager {
     
-    activeObjects: IPhysicsObject[];
-    inactiveObject: IPhysicsObject[]; // Maybe
+    activeObjects: IPhysicsObject[] = [];
+    inactiveObject: IPhysicsObject[] = []; // Maybe
 
     step(dt: number) {
         // Move everything active
