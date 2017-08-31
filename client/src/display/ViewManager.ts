@@ -1,4 +1,5 @@
 import { GameObject } from "../game/GameObject";
+// import * as $ from 'jquery';
 
 export class ViewManager {
     viewObjects: GameObject[] = [];
