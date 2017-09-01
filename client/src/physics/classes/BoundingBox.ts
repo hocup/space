@@ -1,5 +1,13 @@
 export class BoundingBox {
-    constructor(public minx: number, public miny: number, public maxx: number, public maxxy: number){}
+
+    get height() : number {
+        return this.maxy - this.miny;
+    }
+
+    get width() : number {
+        return this.maxx - this.minx;
+    }
+    constructor(public minx: number, public miny: number, public maxx: number, public maxy: number){}
 
     
 }

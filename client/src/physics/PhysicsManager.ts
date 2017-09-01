@@ -14,9 +14,20 @@ export class PhysicsManager {
             }
         );
 
+        this.doGravity();
+
         // Test for collisions
         let allObjects = this.activeObjects.concat(this.inactiveObject);
 
         
+    }
+
+    doGravity() {
+        this.activeObjects.map(
+            (o) => {
+                let impulse = o.position.getNormalized().scale(- o.mass);
+                o.velocity = o.velocity.add(impulse.scale(1/o.mass));
+            }
+        )
     }
 }

@@ -19,5 +19,9 @@ export class Point2d {
         return new Point2d(this.x*s, this.y*s);
     }
 
+    getNormalized() : Point2d {
+        let length = this.getLength();
+        return new Point2d(this.x / length, this.y/length );
+    }
     
 }

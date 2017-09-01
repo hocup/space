@@ -18,5 +18,6 @@ export class CircleObject implements IPhysicsObject {
         this.velocity = new Point2d(0,0);
 
         this.collider = new CircleCollider(5, this.position);
+        this.mass = mass
     }
 }
