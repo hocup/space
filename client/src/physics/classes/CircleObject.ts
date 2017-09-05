@@ -4,7 +4,19 @@ import { Point2d } from "../../math2d/Point2d";
 import { CircleCollider } from "./CircleCollider";
 
 export class CircleObject implements IPhysicsObject {
-    position: Point2d;
+    _position: Point2d;
+
+    get position(): Point2d {
+        return this._position;
+    }
+
+    set position(v: Point2d) {
+        this._position = v;
+        if(this.collider) {
+            this.collider.center = v;
+        }
+    }
+
     velocity: Point2d;
 
     angularPosition: number = 0;
@@ -14,10 +26,17 @@ export class CircleObject implements IPhysicsObject {
     collider: CircleCollider;
 
     constructor(pos: Point2d = new Point2d(0,0), radius: number = 5, mass: number = 1) {
+        this.collider = new CircleCollider(5, this.position);
         this.position = pos;
         this.velocity = new Point2d(0,0);
-
-        this.collider = new CircleCollider(5, this.position);
+        
         this.mass = mass
+    }
+
+    applyImpulse(pos: Point2d, impulse: Point2d): void {
+        //TODO: Handle off-center collisions
+        
+        this.velocity = this.velocity.add(impulse.scale(1/this.mass));
+        
     }
 }

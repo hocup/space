@@ -13,4 +13,6 @@ export interface IPhysicsObject {
     mass: number;
 
     collider: ICollider;
+
+    applyImpulse(pos: Point2d, impuse: Point2d): void;
 }

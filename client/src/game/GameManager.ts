@@ -21,7 +21,7 @@ export class GameManager {
         this.viewManager = new ViewManager("viewContainer");
 
         // for(let i = 0; i < 1; i++){
-        for(let i = 0; i < 400; i++) {
+        for(let i = 0; i < 800; i++) {
             let newObject = new GameObject(null);
             newObject.physicsObject = new CircleObject();
             newObject.physicsObject.position = new Point2d( (i%20) * 30 + 40, 50 + 30 * (Math.floor(i/20)));
