@@ -33,11 +33,11 @@ export class GameObject {
 
         screenPos = screenPos.add(cornerOffset);
 
-        let topValue = screenPos.x;//this.physicsObject.position.y - this.physicsObject.collider.getBoundingBox().height/2;
-        let leftValue = screenPos.y;this.physicsObject.position.x - this.physicsObject.collider.getBoundingBox().width/2;
+        let topValue = screenPos.y;//this.physicsObject.position.y - this.physicsObject.collider.getBoundingBox().height/2;
+        let leftValue = screenPos.x;//this.physicsObject.position.x - this.physicsObject.collider.getBoundingBox().width/2;
         
         if(!objectDiv) {
-            parent.append($("<div id=\"gameobject-" + this.id + "\" style=\"top: " + topValue + "px; left: " + leftValue + "px; width: 10px; height: 10px; background-color:red; position: absolute;\"></div>"));
+            parent.append($("<div id=\"gameobject-" + this.id + "\" style=\"top: " + topValue + "px; left: " + leftValue + "px; width: 10px; height: 10px; background-color:red; position: absolute; border-radius: 100%;\"></div>"));
         } else {
             let objectRef = $(objectDiv);
             

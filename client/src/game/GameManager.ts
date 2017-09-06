@@ -21,13 +21,22 @@ export class GameManager {
         this.viewManager = new ViewManager("viewContainer");
 
         // for(let i = 0; i < 1; i++){
-        for(let i = 0; i < 800; i++) {
+        for(let i = 0; i < 300; i++) {
             let newObject = new GameObject(null);
             newObject.physicsObject = new CircleObject();
             newObject.physicsObject.position = new Point2d( (i%20) * 30 + 40, 50 + 30 * (Math.floor(i/20)));
             newObject.physicsObject.velocity = new Point2d(50*Math.random(), 20*Math.random());
             this.objects.push(newObject);
         }
+
+        let objectA = new GameObject(null);
+        objectA.physicsObject = new CircleObject(new Point2d(0,0));
+        objectA.physicsObject.velocity = new Point2d(30,0);
+        let objectB = new GameObject(null);
+        objectB.physicsObject = new CircleObject(new Point2d(200,0));
+
+        this.objects.push(objectA);
+        this.objects.push(objectB);
 
         this.objects.map(
             (o) => {

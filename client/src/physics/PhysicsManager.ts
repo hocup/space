@@ -1,6 +1,7 @@
 import { IPhysicsObject } from "./interfaces/IPhysicsObject";
 import { NaiveCollisionFinder } from "./classes/NiaveCollisionFinder";
 import { ColliderTypes } from "./classes/ColliderTypes";
+import { CircleCollider } from "./classes/CircleCollider";
 
 export class PhysicsManager {
     
@@ -37,13 +38,25 @@ export class PhysicsManager {
                     && pair.objectB.collider.type == ColliderTypes.CIRCLE_COLLIDER
                 ) {
                     // Narrow phase
-                    let aToB = pair.objectB.position.add(pair.objectA.position.scale(-1)).getNormalized();
-                    // FIXME to be actual elastic collision
-                    // pair.objectA.velocity.add(aToB.scale(pair.objectA.mass))
-                    // pair.objectB.velocity.add(aToB.scale(-pair.objectB.mass))
-                    pair.objectA.applyImpulse(pair.objectA.position, aToB.scale(-pair.objectA.mass*5))
-                    pair.objectB.applyImpulse(pair.objectB.position, aToB.scale(pair.objectB.mass*5))
-                    
+                    let aToB = pair.objectB.position.add(pair.objectA.position.scale(-1));
+                    if(aToB.getLength() < (<CircleCollider>pair.objectA.collider).radius + (<CircleCollider>pair.objectB.collider).radius) {
+                        aToB = aToB.getNormalized();
+                        let va = aToB.dotProduct(pair.objectA.velocity);
+                        let vb = aToB.dotProduct(pair.objectB.velocity);
+
+                        // console.log("velocities", va, vb)
+                        if(va - vb > 0) {
+                            // FIXME to be actual elastic collision
+                            // pair.objectA.velocity.add(aToB.scale(pair.objectA.mass))
+                            // pair.objectB.velocity.add(aToB.scale(-pair.objectB.mass))
+                            let ma = pair.objectA.mass;
+                            let mb = pair.objectB.mass;
+                            let impulse = (va - vb)*(1 + (ma - mb)/(ma + mb));
+
+                            pair.objectA.applyImpulse(pair.objectA.position, aToB.scale(-impulse));
+                            pair.objectB.applyImpulse(pair.objectB.position, aToB.scale(impulse));
+                        }
+                    } 
                 }
             }
         )
@@ -63,7 +76,7 @@ export class PhysicsManager {
     doFriction() {
         this.activeObjects.map(
             (o) => {
-                let impulse = o.velocity.scale(-o.mass).scale(0.02);
+                let impulse = o.velocity.scale(-o.mass).scale(0.008);
                 o.applyImpulse(o.position, impulse);
                 // o.velocity = o.velocity.add(impulse.scale(1/o.mass));
             }
