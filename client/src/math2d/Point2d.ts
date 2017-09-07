@@ -9,7 +9,13 @@ export class Point2d {
         return p.x*this.x + p.y*this.y;
     }
 
-    //TODO: Cross product?
+    crossProduct(vec: Point2d): number {
+        // Technically, a cross product makes a vector from two vectors
+        // but since we're in 2d, I can get away with just returning a number
+        // along the z-axis
+        let out = this.x*vec.y - this.y*vec.x;
+        return out;
+    }
     
     add(p: Point2d): Point2d {
         return new Point2d(p.x + this.x, p.y + this.y);

@@ -7,7 +7,6 @@ import { Point2d } from "../math2d/Point2d";
 
 export class GameManager {
 
-
     objects: GameObject[] = [];
 
     physicsManager: PhysicsManager;

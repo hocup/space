@@ -2,6 +2,7 @@ import { IPhysicsObject } from "./interfaces/IPhysicsObject";
 import { NaiveCollisionFinder } from "./classes/NiaveCollisionFinder";
 import { ColliderTypes } from "./classes/ColliderTypes";
 import { CircleCollider } from "./classes/CircleCollider";
+import { ICollidingPair } from "./interfaces/ICollidingPair";
 
 export class PhysicsManager {
     
@@ -28,8 +29,7 @@ export class PhysicsManager {
 
 
         // Test for collisions
-        //let allObjects = this.activeObjects.concat(this.inactiveObject);
-        let broad = this.broadPhase.getCollidingPairs();
+        let broad: ICollidingPair[] = this.broadPhase.getCollidingPairs();
 
         broad.map(
             (pair) => {
@@ -44,11 +44,7 @@ export class PhysicsManager {
                         let va = aToB.dotProduct(pair.objectA.velocity);
                         let vb = aToB.dotProduct(pair.objectB.velocity);
 
-                        // console.log("velocities", va, vb)
                         if(va - vb > 0) {
-                            // FIXME to be actual elastic collision
-                            // pair.objectA.velocity.add(aToB.scale(pair.objectA.mass))
-                            // pair.objectB.velocity.add(aToB.scale(-pair.objectB.mass))
                             let ma = pair.objectA.mass;
                             let mb = pair.objectB.mass;
                             let impulse = (va - vb)*(1 + (ma - mb)/(ma + mb));
@@ -58,6 +54,8 @@ export class PhysicsManager {
                         }
                     } 
                 }
+
+                
             }
         )
         
@@ -67,7 +65,6 @@ export class PhysicsManager {
         this.activeObjects.map(
             (o) => {
                 let impulse = o.position.getNormalized().scale(- o.mass);
-                // o.velocity = o.velocity.add(impulse.scale(1/o.mass));
                 o.applyImpulse(o.position, impulse);
             }
         );
@@ -78,8 +75,7 @@ export class PhysicsManager {
             (o) => {
                 let impulse = o.velocity.scale(-o.mass).scale(0.008);
                 o.applyImpulse(o.position, impulse);
-                // o.velocity = o.velocity.add(impulse.scale(1/o.mass));
             }
-        )
+        );
     }
 }
