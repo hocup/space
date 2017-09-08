@@ -10,6 +10,10 @@ export class CompoundCircleCollider implements ICollider {
     circleInitialOffsets: Point2d[] = []; // Where the circles are when the collider is initialized
     circles: CircleCollider[] = [];
 
+    currentPosition: Point2d = new Point2d(0,0);
+    currentRotation: number = 0;
+    circlesNeedUpdate: boolean = false;
+
     getBoundingBox(): BoundingBox {
         let bbout: BoundingBox = null;
 
@@ -29,6 +33,35 @@ export class CompoundCircleCollider implements ICollider {
     }
 
     setPosition(p: Point2d) {
-        
+        let offset = this.currentPosition.add(p.scale(-1));
+        if(offset.getLength() > 0.001){
+            // Position needs update
+            this.currentPosition = p;
+            this.circlesNeedUpdate = true;
+        }
     }
+
+    setRotation(angle: number) {
+        //todo: check for tiny rotations
+        
+        if(this.currentRotation != angle) {
+            this.currentRotation = angle;
+            this.circlesNeedUpdate = true;
+        }
+    }
+
+    updateCollider() {
+        
+        for(let i = 0; i < this.circles.length; i++){
+            if(this.circleInitialOffsets[i]){
+                // First, rotate the initalized colliders
+                this.circles[i].center = this.circleInitialOffsets[i].rotate(this.currentRotation);
+                // Then, offset them
+                this.circles[i].center = this.circles[i].center.add(this.currentPosition);
+            }
+        }
+
+        this.circlesNeedUpdate = false;
+    }
+    
 }

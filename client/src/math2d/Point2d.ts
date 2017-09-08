@@ -30,4 +30,9 @@ export class Point2d {
         return new Point2d(this.x / length, this.y/length );
     }
     
+    rotate(angle: number): Point2d {
+        let nx = this.x*Math.cos(angle) - this.y*Math.sin(angle);
+        let ny = this.x*Math.sin(angle) + this.y*Math.cos(angle);
+        return new Point2d(nx, ny);
+    }
 }

@@ -12,6 +12,7 @@ export class CompoundCircleObject implements IPhysicsObject {
         return this._angularPosition;
     }
     set angularPosition(v: number) {
+        this.collider.setRotation(v);
         this._angularPosition = v;
     }
     angularVelocity: number;
