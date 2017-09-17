@@ -27,6 +27,9 @@ export class Point2d {
 
     getNormalized() : Point2d {
         let length = this.getLength();
+        if(length == 0) {
+            return new Point2d(0,0);
+        }
         return new Point2d(this.x / length, this.y/length );
     }
     
@@ -34,5 +37,9 @@ export class Point2d {
         let nx = this.x*Math.cos(angle) - this.y*Math.sin(angle);
         let ny = this.x*Math.sin(angle) + this.y*Math.cos(angle);
         return new Point2d(nx, ny);
+    }
+
+    clone(): Point2d {
+        return new Point2d(this.x, this.y);
     }
 }

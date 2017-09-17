@@ -5,7 +5,7 @@ import { CircleCollider } from "./CircleCollider";
 import { Point2d } from "../../math2d/Point2d";
 
 export class CompoundCircleCollider implements ICollider {
-    type: ColliderTypes = ColliderTypes.COMPOUNT_CIRCLE_COLLIDER;
+    type: ColliderTypes = ColliderTypes.COMPOUND_CIRCLE_COLLIDER;
 
     circleInitialOffsets: Point2d[] = []; // Where the circles are when the collider is initialized
     circles: CircleCollider[] = [];
@@ -36,7 +36,7 @@ export class CompoundCircleCollider implements ICollider {
         let offset = this.currentPosition.add(p.scale(-1));
         if(offset.getLength() > 0.001){
             // Position needs update
-            this.currentPosition = p;
+            this.currentPosition = p.clone();
             this.circlesNeedUpdate = true;
         }
     }
@@ -51,17 +51,22 @@ export class CompoundCircleCollider implements ICollider {
     }
 
     updateCollider() {
-        
+        // console.log("updating collider", this.currentPosition, this.currentRotation);
         for(let i = 0; i < this.circles.length; i++){
             if(this.circleInitialOffsets[i]){
+                
                 // First, rotate the initalized colliders
                 this.circles[i].center = this.circleInitialOffsets[i].rotate(this.currentRotation);
                 // Then, offset them
                 this.circles[i].center = this.circles[i].center.add(this.currentPosition);
+
+                // console.log(this.circleInitialOffsets[i], this.circles[i].center)
             }
         }
 
         this.circlesNeedUpdate = false;
     }
+
+    
     
 }
