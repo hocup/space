@@ -14,7 +14,8 @@ export class CompoundCircleGameObject extends GameObject {
         super(null);
 
         this.physicsObject = new CompoundCirclePhysicsObject();
-        this.physicsObject.momentOfInertia = 600; //TODO
+
+        this.physicsObject.momentOfInertia = 0; //TODO
         this.physicsObject.collider = new CompoundCircleCollider();
 
         if(!circleDefs) {
@@ -24,7 +25,13 @@ export class CompoundCircleGameObject extends GameObject {
         for(let i = 0; i < circleDefs.length; i++) {
             this.physicsObject.collider.circles.push(new CircleCollider(circleDefs[i].radius, circleDefs[i].pos));
             this.physicsObject.collider.circleInitialOffsets.push(circleDefs[i].pos);
+
+            this.physicsObject.momentOfInertia += Math.pow(circleDefs[i].radius,2)*Math.pow(circleDefs[i].pos.getLength(), 2);
+            this.physicsObject.mass += Math.pow(circleDefs[i].radius,2);
         }
+
+        console.log(this.physicsObject.momentOfInertia);
+        console.log(this.physicsObject.mass);
 
         this.physicsObject.position = new Point2d(0,0);
         this.physicsObject.velocity = new Point2d(0,0);

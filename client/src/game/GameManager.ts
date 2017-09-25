@@ -40,16 +40,16 @@ export class GameManager {
         // this.objects.push(objectA);
         // this.objects.push(objectB);
 
-        for(let i = 0; i < 10; i++) {
-
-            let newSeed = new SeedObject();
-            newSeed.physicsObject.position = new Point2d((i%20) * 42 , Math.floor(i/20)* 40);
-            newSeed.physicsObject.velocity = new Point2d(0,0);
-            
-            this.objects.push(newSeed);
-        }
-
         // for(let i = 0; i < 10; i++) {
+
+        //     let newSeed = new SeedObject();
+        //     newSeed.physicsObject.position = new Point2d((i%20) * 42 , Math.floor(i/20)* 40);
+        //     newSeed.physicsObject.velocity = new Point2d(0,0);
+            
+        //     this.objects.push(newSeed);
+        // }
+
+        // for(let i = 0; i < 100; i++) {
         //     let newStick = new LongStickObject();
         //     newStick.physicsObject.position = new Point2d(- (i%3) * 42, Math.floor(i/3) * 50);
         //     newStick.physicsObject.angularVelocity = 1;
@@ -64,14 +64,27 @@ export class GameManager {
         // this.objects.push(triangleObject);
         // this.objects.push(triangleObjectB);
 
+        // let testBallA = new GameObject(null);
+        // testBallA.physicsObject = new CircleObject();
+        // testBallA.physicsObject.position = new Point2d(0, 0);
+        // testBallA.physicsObject.velocity = new Point2d(20, 0);
+        // testBallA.physicsObject.mass = 200;
+        // this.objects.push(testBallA);
+
         let testBall = new GameObject(null);
         testBall.physicsObject = new CircleObject();
-        testBall.physicsObject.position = new Point2d(20, 0);
+        testBall.physicsObject.position = new Point2d(6*3, 9);
+        testBall.physicsObject.mass = 11;
+        this.objects.push(testBall);
+
+        // let testStickA = new LongStickObject();
+        // testStickA.physicsObject.angularVelocity = -2;
+        // testStickA.physicsObject.position = new Point2d(20,0);
+        // this.objects.push(testStickA);
 
         let testStick = new LongStickObject();
         testStick.physicsObject.angularVelocity = 2;
-
-        this.objects.push(testBall);
+        // testStick.physicsObject.velocity = new Point2d(20, 0);
         this.objects.push(testStick);
 
         this.objects.map(
