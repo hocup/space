@@ -30,8 +30,8 @@ export class CompoundCircleGameObject extends GameObject {
             this.physicsObject.mass += Math.pow(circleDefs[i].radius,2);
         }
 
-        console.log(this.physicsObject.momentOfInertia);
-        console.log(this.physicsObject.mass);
+        // console.log(this.physicsObject.momentOfInertia);
+        // console.log(this.physicsObject.mass);
 
         this.physicsObject.position = new Point2d(0,0);
         this.physicsObject.velocity = new Point2d(0,0);
