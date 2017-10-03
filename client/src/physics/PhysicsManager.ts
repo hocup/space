@@ -3,7 +3,7 @@ import { NaiveCollisionFinder } from "./classes/NiaveCollisionFinder";
 import { ColliderTypes } from "./classes/ColliderTypes";
 import { CircleCollider } from "./classes/CircleCollider";
 import { ICollidingPair } from "./interfaces/ICollidingPair";
-import { CircleObject } from "./classes/CircleObject";
+import { CirclePhysicsObject } from "./classes/CirclePhysicsObject";
 import { Point2d } from "../math2d/Point2d";
 import { CompoundCircleCollider } from "./classes/CompoundCircleCollider";
 
@@ -12,7 +12,7 @@ export class PhysicsManager {
     paused: boolean = false;
 
     activeObjects: IPhysicsObject[] = [];
-    inactiveObject: IPhysicsObject[] = []; // Maybe
+    inactiveObjects: IPhysicsObject[] = []; // Maybe
 
     broadPhase: NaiveCollisionFinder = new NaiveCollisionFinder();
 
@@ -45,7 +45,7 @@ export class PhysicsManager {
                     && pair.objectB.collider.type == ColliderTypes.CIRCLE_COLLIDER
                 ) {
                     // Narrow phase
-                    collision = this.circleToCircleTest(<CircleObject>pair.objectA, <CircleObject>pair.objectB);
+                    collision = this.circleToCircleTest(<CirclePhysicsObject>pair.objectA, <CirclePhysicsObject>pair.objectB);
                 }  
                 
                 if(
@@ -60,13 +60,13 @@ export class PhysicsManager {
                     for(let i = 0; i < col1.circles.length; i++) {
                         for(let j = 0; j < col2.circles.length; j++) {
 
-                            let circle1 = new CircleObject(col1.circles[i].center, col1.circles[i].radius);
+                            let circle1 = new CirclePhysicsObject(col1.circles[i].center, col1.circles[i].radius);
                             circle1.mass = pair.objectA.mass;
                             
                             let fromRotation1 = col1.circleInitialOffsets[i].rotate(col1.currentRotation).scale(pair.objectA.angularVelocity);
                             circle1.velocity = pair.objectA.velocity.add(fromRotation1);
 
-                            let circle2 = new CircleObject(col2.circles[j].center, col2.circles[j].radius);
+                            let circle2 = new CirclePhysicsObject(col2.circles[j].center, col2.circles[j].radius);
                             circle2.mass = pair.objectB.mass;
                             
                             let fromRotation2 = col2.circleInitialOffsets[j].rotate(col2.currentRotation).scale(pair.objectB.angularVelocity);
@@ -109,9 +109,9 @@ export class PhysicsManager {
                     let colliderB = (<CompoundCircleCollider>pair.objectB.collider);
                     let collisions: {position: Point2d, impulse: Point2d, backupTime: number}[] = [];
                     for (let j = 0; j < colliderB.circles.length; j ++) {
-                        let circle1 = (<CircleObject>pair.objectA);
+                        let circle1 = (<CirclePhysicsObject>pair.objectA);
 
-                        let circle2 = new CircleObject(colliderB.circles[j].center, colliderB.circles[j].radius);
+                        let circle2 = new CirclePhysicsObject(colliderB.circles[j].center, colliderB.circles[j].radius);
                         circle2.mass = pair.objectB.mass;
                         
                         let fromRotation2 = colliderB.circleInitialOffsets[j].rotate(colliderB.currentRotation).rotate(Math.PI/2).scale(pair.objectB.angularVelocity);
@@ -173,7 +173,7 @@ export class PhysicsManager {
         
     }
 
-    circleToCircleTest(c1: CircleObject, c2: CircleObject): {position: Point2d, impulse: Point2d, backupTime: number} {
+    circleToCircleTest(c1: CirclePhysicsObject, c2: CirclePhysicsObject): {position: Point2d, impulse: Point2d, backupTime: number} {
         
         let aToB = c2.position.add(c1.position.scale(-1));
         // console.log(aToB.getLength(), c1.collider.radius, c2.collider.radius);

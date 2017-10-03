@@ -1,12 +1,13 @@
 // GameManager manages the game state, takes care of the view manager and the physics manager
 import { GameObject } from "./GameObject";
-import { CircleObject } from "../physics/classes/CircleObject";
+import { CirclePhysicsObject } from "../physics/classes/CirclePhysicsObject";
 import { PhysicsManager } from "../physics/PhysicsManager";
 import { ViewManager } from "../display/ViewManager";
 import { Point2d } from "../math2d/Point2d";
 import { TriangleObject } from "./TriangleObject";
 import { SeedObject } from "./SeedObject";
 import { LongStickObject } from "./LongStickObject";
+import { InputManager, InputChangeEvent } from "./InputManager";
 
 export class GameManager {
 
@@ -14,6 +15,7 @@ export class GameManager {
 
     physicsManager: PhysicsManager;
     viewManager: ViewManager;
+    inputManager: InputManager;
 
     physicsTimeStep: number = 0.025; // In seconds
     lastTimeStamp: number;
@@ -22,10 +24,14 @@ export class GameManager {
         this.physicsManager = new PhysicsManager();
         this.viewManager = new ViewManager("viewContainer");
 
+        this.inputManager = new InputManager();
+
+        this.inputManager.inputStateChanged.subscribe((event: InputChangeEvent) => {console.log("input change", event);})
+
         // // for(let i = 0; i < 1; i++){
-        for(let i = 0; i < 600; i++) {
+        for(let i = 0; i < 300; i++) {
             let newObject = new GameObject(null);
-            newObject.physicsObject = new CircleObject();
+            newObject.physicsObject = new CirclePhysicsObject();
             newObject.physicsObject.position = new Point2d( (i%20) * 30 + 40, 50 + 30 * (Math.floor(i/20)));
             newObject.physicsObject.velocity = new Point2d(50*Math.random(), 20*Math.random());
             newObject.physicsObject.mass = 40;
@@ -73,7 +79,7 @@ export class GameManager {
         // this.objects.push(testBallA);
 
         let testBall = new GameObject(null);
-        testBall.physicsObject = new CircleObject();
+        testBall.physicsObject = new CirclePhysicsObject();
         testBall.physicsObject.position = new Point2d(6*3, 9);
         testBall.physicsObject.mass = 5;
         this.objects.push(testBall);

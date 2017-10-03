@@ -3,7 +3,7 @@ import { IPhysicsObject } from "../interfaces/IPhysicsObject";
 import { Point2d } from "../../math2d/Point2d";
 import { CircleCollider } from "./CircleCollider";
 
-export class CircleObject implements IPhysicsObject {
+export class CirclePhysicsObject implements IPhysicsObject {
     _position: Point2d;
 
     get position(): Point2d {
