@@ -8,6 +8,7 @@ import { TriangleObject } from "./TriangleObject";
 import { SeedObject } from "./SeedObject";
 import { LongStickObject } from "./LongStickObject";
 import { InputManager, InputChangeEvent } from "./InputManager";
+import { PlayerShipObject } from "./PlayerShipObject";
 
 export class GameManager {
 
@@ -34,7 +35,7 @@ export class GameManager {
             newObject.physicsObject = new CirclePhysicsObject();
             newObject.physicsObject.position = new Point2d( (i%20) * 30 + 40, 50 + 30 * (Math.floor(i/20)));
             newObject.physicsObject.velocity = new Point2d(50*Math.random(), 20*Math.random());
-            newObject.physicsObject.mass = 40;
+            newObject.physicsObject.mass = 400;
             this.objects.push(newObject);
         }
 
@@ -56,13 +57,13 @@ export class GameManager {
         //     this.objects.push(newSeed);
         // }
 
-        for(let i = 0; i < 10; i++) {
-            let newStick = new LongStickObject();
-            newStick.physicsObject.position = new Point2d(- (i%3) * 42, Math.floor(i/3) * 50);
-            newStick.physicsObject.angularVelocity = 1;
+        // for(let i = 0; i < 10; i++) {
+        //     let newStick = new LongStickObject();
+        //     newStick.physicsObject.position = new Point2d(- (i%3) * 42, Math.floor(i/3) * 50);
+        //     newStick.physicsObject.angularVelocity = 1;
 
-            this.objects.push(newStick);
-        }
+        //     this.objects.push(newStick);
+        // }
         
         // let triangleObject = new TriangleObject();
         // let triangleObjectB = new TriangleObject();
@@ -89,10 +90,21 @@ export class GameManager {
         // testStickA.physicsObject.position = new Point2d(20,0);
         // this.objects.push(testStickA);
 
-        let testStick = new LongStickObject();
-        testStick.physicsObject.angularVelocity = 2;
-        // testStick.physicsObject.velocity = new Point2d(20, 0);
-        this.objects.push(testStick);
+        // let testStick = new LongStickObject();
+        // testStick.physicsObject.angularVelocity = 2;
+        // // testStick.physicsObject.velocity = new Point2d(20, 0);
+        // this.objects.push(testStick);
+
+
+        let testPlayer = new PlayerShipObject();
+        this.inputManager.inputStateChanged.subscribe(
+            (e: InputChangeEvent) => {
+                testPlayer.inputStateChanged(e.newState);
+            }
+        );
+
+        this.objects.push(testPlayer);
+        this.viewManager.follow = testPlayer;
 
         this.objects.map(
             (o) => {
@@ -111,10 +123,16 @@ export class GameManager {
         let timePassed = newTime - this.lastTimeStamp;
         this.lastTimeStamp = newTime;
 
+        this.viewManager.step(timePassed);
+
         this.viewManager.draw();
         
         this.physicsManager.step(this.physicsTimeStep);
+        for(let i = 0; i < this.objects.length; i++) {
+            this.objects[i].step(timePassed);
+        }
 
+        
         // console.log(timePassed);
 
         setTimeout(this.tick, this.physicsTimeStep*1000);

@@ -5,6 +5,7 @@ import { ViewTransform } from "./ViewTransform";
 
 export class ViewManager {
     transform: ViewTransform = new ViewTransform();
+    follow: GameObject;
 
     viewObjects: GameObject[] = [];
 
@@ -18,5 +19,12 @@ export class ViewManager {
         this.viewObjects.map(
             (o) =>  {o.draw($("#" + this.containerId), this.transform)}
         );
+    }
+
+    step(dt:number) {
+
+        this.transform.position.x = this.follow.physicsObject.position.x;
+        this.transform.position.y = this.follow.physicsObject.position.y;
+
     }
 }

@@ -45,4 +45,8 @@ export class GameObject {
             objectRef.css("left", leftValue + "px");
         }
     }
+
+    step(dt: number) {
+        
+    }
 }

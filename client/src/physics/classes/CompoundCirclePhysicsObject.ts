@@ -29,6 +29,10 @@ export class CompoundCirclePhysicsObject implements IPhysicsObject {
         this.collider.updateCollider();
     }
 
+    get heading(): Point2d {
+        return new Point2d(Math.cos(this.angularPosition), Math.sin(this._angularPosition));
+    }
+
     velocity: Point2d = new Point2d(0,0);
 
     mass: number = 1;

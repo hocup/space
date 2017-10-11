@@ -15,7 +15,7 @@ export class CompoundCircleGameObject extends GameObject {
 
         this.physicsObject = new CompoundCirclePhysicsObject();
 
-        this.physicsObject.momentOfInertia = 0; //TODO
+        this.physicsObject.momentOfInertia = 0;
         this.physicsObject.collider = new CompoundCircleCollider();
 
         if(!circleDefs) {

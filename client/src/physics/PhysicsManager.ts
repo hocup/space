@@ -168,7 +168,7 @@ export class PhysicsManager {
             }
         );
 
-        this.doGravity();
+        // this.doGravity();
         this.doFriction();
         
     }

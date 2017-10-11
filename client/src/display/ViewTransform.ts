@@ -9,7 +9,7 @@ export class ViewTransform {
 
     transformPoint(p: Point2d): Point2d {
         //TODO: Deal with scaling and rotation
-
+        // console.log("TRANSFORMING", p, this.position, this.centerOffset);
         return p.add(this.position.scale(-1)).add(this.centerOffset);
     }
 }
