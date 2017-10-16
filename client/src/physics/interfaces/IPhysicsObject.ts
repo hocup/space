@@ -14,5 +14,6 @@ export interface IPhysicsObject {
 
     collider: ICollider;
 
-    applyImpulse(pos: Point2d, impuse: Point2d): void;
+    // TODO: Decorator? Make this into a class? Gotta find a good way to generalize this function
+    applyImpulse(pos: Point2d, impulse: Point2d): void;
 }
