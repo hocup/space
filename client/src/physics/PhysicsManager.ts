@@ -38,7 +38,11 @@ export class PhysicsManager {
 
         broad.map(
             (pair) => {
-                let collision: {position: Point2d, impulse: Point2d, backupTime: number} = null;
+                let collision:  {
+                                    position: Point2d, 
+                                    impulse: Point2d, 
+                                    backupTime: number
+                                } = null;
 
                 if(
                     pair.objectA.collider.type == ColliderTypes.CIRCLE_COLLIDER

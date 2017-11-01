@@ -1,0 +1,43 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BoundingBox	physics/classes/BoundingBox.ts	/^export class BoundingBox {$/;"	c
+CircleCollider	physics/classes/CircleCollider.ts	/^export class CircleCollider implements ICollider {$/;"	c
+CirclePhysicsObject	physics/classes/CirclePhysicsObject.ts	/^export class CirclePhysicsObject implements IPhysicsObject {$/;"	c
+ColliderTypes	physics/classes/ColliderTypes.ts	/^export enum ColliderTypes {$/;"	e
+CompoundCircleCollider	physics/classes/CompoundCircleCollider.ts	/^export class CompoundCircleCollider implements ICollider {$/;"	c
+CompoundCircleGameObject	game/CompoundCircleGameObject.ts	/^export class CompoundCircleGameObject extends GameObject {$/;"	c
+CompoundCirclePhysicsObject	physics/classes/CompoundCirclePhysicsObject.ts	/^export class CompoundCirclePhysicsObject implements IPhysicsObject {$/;"	c
+EventEmitter	game/EventEmitter.ts	/^export class EventEmitter<T> {$/;"	c
+GameManager	game/GameManager.ts	/^export class GameManager {$/;"	c
+GameObject	game/GameObject.ts	/^export class GameObject {$/;"	c
+ICollider	physics/interfaces/ICollider.ts	/^export interface ICollider {$/;"	i
+ICollidingPair	physics/interfaces/ICollidingPair.ts	/^export interface ICollidingPair {$/;"	i
+ICollisionFinder	physics/interfaces/ICollisionFinder.ts	/^export interface ICollisionFinder {$/;"	i
+IPhysicsObject	physics/interfaces/IPhysicsObject.ts	/^export interface IPhysicsObject {$/;"	i
+InputChangeEvent	game/InputManager.ts	/^export class InputChangeEvent {$/;"	c
+InputManager	game/InputManager.ts	/^export class InputManager {$/;"	c
+InputState	game/InputManager.ts	/^export class InputState {$/;"	c
+LoggingManager	logging/LoggingManager.ts	/^export class LoggingManager {$/;"	c
+LongStickObject	game/LongStickObject.ts	/^export class LongStickObject extends CompoundCircleGameObject{$/;"	c
+NaiveCollisionFinder	physics/classes/NiaveCollisionFinder.ts	/^export class NaiveCollisionFinder implements ICollisionFinder {$/;"	c
+PhysicsManager	physics/PhysicsManager.ts	/^export class PhysicsManager {$/;"	c
+PlayerShipObject	game/PlayerShipObject.ts	/^export class PlayerShipObject extends CompoundCircleGameObject {$/;"	c
+Point2d	math2d/Point2d.ts	/^export class Point2d {$/;"	c
+SeedObject	game/SeedObject.ts	/^export class SeedObject extends CompoundCircleGameObject{$/;"	c
+TriangleObject	game/TriangleObject.ts	/^export class TriangleObject extends GameObject {$/;"	c
+ViewManager	display/ViewManager.ts	/^export class ViewManager implements IPhysicsObject{$/;"	c
+ViewTransform	display/ViewTransform.ts	/^export class ViewTransform {$/;"	c
+_position	physics/classes/CompoundCirclePhysicsObject.ts	/^    private _position: Point2d = new Point2d(0,0);$/;"	m
+forwardThrust	game/PlayerShipObject.ts	/^    private forwardThrust: number;$/;"	m
+getInstance	logging/LoggingManager.ts	/^    public static getInstance (): LoggingManager {$/;"	m
+instance	logging/LoggingManager.ts	/^    private static instance: LoggingManager;$/;"	m
+keyDownCallback	game/InputManager.ts	/^    private keyDownCallback = (e:KeyboardEvent) => {$/;"	m
+keyUpCallback	game/InputManager.ts	/^    private keyUpCallback = (e: KeyboardEvent) => {$/;"	m
+latestInput	game/PlayerShipObject.ts	/^    private latestInput: InputState;$/;"	m
+reverseThrust	game/PlayerShipObject.ts	/^    private reverseThrust: number;$/;"	m
+subscribers	game/EventEmitter.ts	/^    private subscribers: ((event: T) => void)[] = [];$/;"	m
+turnThrust	game/PlayerShipObject.ts	/^    private turnThrust: number;$/;"	m

@@ -20,6 +20,8 @@ export class GameManager {
 
     physicsTimeStep: number = 0.025; // In seconds
     lastTimeStamp: number;
+
+    paused = false;
     
     entry() {
         this.physicsManager = new PhysicsManager();
@@ -27,7 +29,14 @@ export class GameManager {
 
         this.inputManager = new InputManager();
 
-        this.inputManager.inputStateChanged.subscribe((event: InputChangeEvent) => {console.log("input change", event);})
+        this.inputManager.inputStateChanged.subscribe(
+            (event: InputChangeEvent) => {
+                console.log("input change", event);
+                if(event.newState.state.togglePause) {
+                    this.togglePause();
+                }
+            }
+        );
 
         // // for(let i = 0; i < 1; i++){
         for(let i = 0; i < 300; i++) {
@@ -50,12 +59,6 @@ export class GameManager {
 
         // for(let i = 0; i < 10; i++) {
 
-        //     let newSeed = new SeedObject();
-        //     newSeed.physicsObject.position = new Point2d((i%20) * 42 , Math.floor(i/20)* 40);
-        //     newSeed.physicsObject.velocity = new Point2d(0,0);
-            
-        //     this.objects.push(newSeed);
-        // }
 
         // for(let i = 0; i < 10; i++) {
         //     let newStick = new LongStickObject();
@@ -134,7 +137,17 @@ export class GameManager {
 
         
         // console.log(timePassed);
+        if(!this.paused) {
+            setTimeout(this.tick, this.physicsTimeStep*1000);
+        }
+    }
 
-        setTimeout(this.tick, this.physicsTimeStep*1000);
+    togglePause() {
+        this.paused = !this.paused;
+
+        if(!this.paused) {
+            this.lastTimeStamp = new Date().getTime();
+            this.tick();
+        }
     }
 }

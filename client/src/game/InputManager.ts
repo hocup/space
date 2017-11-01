@@ -8,7 +8,8 @@ export class InputManager {
         "KeyW": "playerForward",
         "KeyS": "playerBack",
         "KeyA": "playerTurnLeft",
-        "KeyD": "playerTurnRight"
+        "KeyD": "playerTurnRight",
+        "KeyP": "togglePause"
     }
 
     constructor() {

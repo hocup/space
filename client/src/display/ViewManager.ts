@@ -42,7 +42,8 @@ export class ViewManager implements IPhysicsObject{
         let k = 0.00007;
         let d = 2* Math.sqrt(k*this.mass); //0.02;
 
-        let force: Point2d = this.follow.physicsObject.position.add(this.position.scale(-1)).scale(k*0.5).add(this.velocity.scale(-d));
+        let force: Point2d = this.follow.physicsObject.position
+	    .add(this.position.scale(-1)).scale(k*0.5).add(this.velocity.scale(-d));
         this.velocity = this.velocity.add(force.scale(dt/this.mass));
         this.position = this.position.add(this.velocity.scale(dt));
  
