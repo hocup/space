@@ -16,6 +16,8 @@ export class PhysicsManager {
 
     broadPhase: NaiveCollisionFinder = new NaiveCollisionFinder();
 
+    frictionOn: boolean = true; // Mostly for testing
+
     constructor() {
         this.broadPhase.objects = this.activeObjects;
     }
@@ -173,7 +175,9 @@ export class PhysicsManager {
         );
 
         // this.doGravity();
-        this.doFriction();
+        if(this.frictionOn) {
+            this.doFriction();
+        }
         
     }
 

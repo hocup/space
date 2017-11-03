@@ -98,7 +98,6 @@ export class GameManager {
         // // testStick.physicsObject.velocity = new Point2d(20, 0);
         // this.objects.push(testStick);
 
-
         let testPlayer = new PlayerShipObject();
         this.inputManager.inputStateChanged.subscribe(
             (e: InputChangeEvent) => {
