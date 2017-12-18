@@ -42,4 +42,8 @@ export class Point2d {
     clone(): Point2d {
         return new Point2d(this.x, this.y);
     }
+  
+    isEqual(p:Point2d, fuzz: number = 0) {
+        return Math.pow(p.x-this.x, 2) + Math.pow(p.y-this.y,2) <= fuzz;
+    }
 }

@@ -5,7 +5,6 @@ import { GameObject } from "../game/GameObject";
 import { CirclePhysicsObject } from "./classes/CirclePhysicsObject";
 import { Point2d } from "../../../shared/math2d/Point2d";
 
-namespace PhysicsManagerTests {
 describe("PhysicsManager", function () {
     describe("step(dt:number)", function () {
         let testManager = new PhysicsManager();
@@ -30,9 +29,8 @@ describe("PhysicsManager", function () {
                 testManager.step(0.025);
 
                 console.log(objectA.physicsObject.velocity);
-                assert.ok(true);
+                assert.ok(originalVelocity.scale(-1).isEqual(objectA.physicsObject.velocity));
             }
         );
     });
 });
-}

@@ -83,4 +83,32 @@ describe("Point2d", function() {
             assert.equal(-pA.crossProduct(pB), pB.crossProduct(pA));
         });
     });
+
+    describe("isEqual()", function(){
+        it("returns true when comparing exactly equal vectors with no fuzz",
+            function() {
+                let pA = new Point2d(Math.random(), Math.random());
+                let pB = pA.clone();
+                assert.ok(pA.isEqual(pB));
+            }
+        );
+
+        it("returns false when comparing nearly equal vectors with no fuzz",
+            function() {
+                let pA = new Point2d(Math.random(), Math.random());
+                let pB = pA.clone();
+                pB = pB.scale(0.99);
+                assert.ok(!pA.isEqual(pB));
+            }
+        );
+
+        it("returns true when comparing nearly equal vectors with sufficient fuzz",
+            function() {
+                let pA = new Point2d(Math.random(), Math.random());
+                let pB = pA.clone();
+                pB = pB.scale(0.99);
+                assert.ok(pA.isEqual(pB, 0.01));
+            }
+        );
+    });
 });
