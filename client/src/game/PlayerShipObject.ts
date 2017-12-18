@@ -1,13 +1,18 @@
 import { CompoundCircleGameObject } from "./CompoundCircleGameObject";
-import { Point2d } from "../math2d/Point2d";
+import { Point2d } from "../../../shared/math2d/Point2d";
 import { InputState } from "./InputManager";
+import { ObjectType } from "../../../shared/ObjectType";
+
 
 export class PlayerShipObject extends CompoundCircleGameObject {
+    objectType: ObjectType;
     private latestInput: InputState;
 
     private forwardThrust: number;
     private reverseThrust: number;
     private turnThrust: number;
+
+    
 
     constructor() {
         let circles: {pos: Point2d, radius: number}[] = [];
@@ -29,6 +34,7 @@ export class PlayerShipObject extends CompoundCircleGameObject {
         this.forwardThrust = 1000;
         this.reverseThrust = -500;
         this.turnThrust = 2;
+        this.objectType = ObjectType.PLAYER_SHIP_OBJECT;
     }
 
     step(dt:number) {

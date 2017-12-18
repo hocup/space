@@ -1,5 +1,5 @@
 import { IPhysicsObject } from "../interfaces/IPhysicsObject";
-import { Point2d } from "../../math2d/Point2d";
+import { Point2d } from "../../../../shared/math2d/Point2d";
 import { CompoundCircleCollider } from "./CompoundCircleCollider";
 import { EventEmitter } from "../../game/EventEmitter";
 

@@ -1,5 +1,5 @@
 import { GameObject } from "../game/GameObject";
-import { Point2d } from "../math2d/Point2d";
+import { Point2d } from "../../../shared/math2d/Point2d";
 import { ViewTransform } from "./ViewTransform";
 import { IPhysicsObject } from "../physics/interfaces/IPhysicsObject";
 import { ICollider } from "../physics/interfaces/ICollider";

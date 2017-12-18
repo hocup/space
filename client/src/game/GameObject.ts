@@ -1,7 +1,8 @@
 import { LoggingManager } from "../logging/LoggingManager";
 import { IPhysicsObject } from "../physics/interfaces/IPhysicsObject";
 import { ViewTransform } from "../display/ViewTransform";
-import { Point2d } from "../math2d/Point2d";
+import { Point2d } from "../../../shared/math2d/Point2d";
+import { GameObjectDTO } from "../../../shared/GameObjectDTO";
 
 export class GameObject {
 
@@ -49,4 +50,8 @@ export class GameObject {
     step(dt: number) {
         
     }
+
+    // static deserializeDTO(objectData: GameObjectDTO): GameObject{
+    //     return new GameObject(objectData.id);
+    // }
 }

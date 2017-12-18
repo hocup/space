@@ -3,12 +3,13 @@ import * as Mocha from "mocha";
 import { PhysicsManager } from "./PhysicsManager";
 import { GameObject } from "../game/GameObject";
 import { CirclePhysicsObject } from "./classes/CirclePhysicsObject";
-import { Point2d } from "../math2d/Point2d";
+import { Point2d } from "../../../shared/math2d/Point2d";
 
 namespace PhysicsManagerTests {
 describe("PhysicsManager", function () {
     describe("step(dt:number)", function () {
-        let testManager = new PhysicsManager()
+        let testManager = new PhysicsManager();
+        testManager.frictionOn = false;
         // testManager.
 
         it("handles collisions between two moving spheres of equal mass", 
@@ -25,6 +26,7 @@ describe("PhysicsManager", function () {
                 let originalVelocity = objectA.physicsObject.velocity.clone();
 
                 testManager.activeObjects.push(objectA.physicsObject);
+                testManager.activeObjects.push(objectB.physicsObject);
                 testManager.step(0.025);
 
                 console.log(objectA.physicsObject.velocity);

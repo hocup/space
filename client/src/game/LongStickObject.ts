@@ -1,5 +1,5 @@
 import { CompoundCircleGameObject } from "./CompoundCircleGameObject";
-import { Point2d } from "../math2d/Point2d";
+import { Point2d } from "../../../shared/math2d/Point2d";
 
 
 export class LongStickObject extends CompoundCircleGameObject{

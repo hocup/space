@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "assert": "^1.4.1"
+    "@types/socket.io": "^1.4.31",
+    "assert": "^1.4.1",
+    "socket.io": "^2.0.4"
   },
   "devDependencies": {
     "@types/assert": "0.0.31",

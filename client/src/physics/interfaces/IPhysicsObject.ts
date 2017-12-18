@@ -1,4 +1,4 @@
-import { Point2d } from "../../math2d/Point2d";
+import { Point2d } from "../../../../shared/math2d/Point2d";
 import { BoundingBox } from "../classes/BoundingBox";
 import { ICollider } from "./ICollider";
 

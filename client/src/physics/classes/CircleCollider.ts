@@ -1,6 +1,6 @@
 import { ICollider } from "../interfaces/ICollider";
 import { BoundingBox } from "./BoundingBox";
-import { Point2d } from "../../math2d/Point2d";
+import { Point2d } from "../../../../shared/math2d/Point2d";
 import { ColliderTypes } from "./ColliderTypes";
 
 export class CircleCollider implements ICollider {

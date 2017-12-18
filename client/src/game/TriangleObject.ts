@@ -1,7 +1,7 @@
 import { GameObject } from "./GameObject";
 import { CompoundCircleCollider } from "../physics/classes/CompoundCircleCollider";
 import { CircleCollider } from "../physics/classes/CircleCollider";
-import { Point2d } from "../math2d/Point2d";
+import { Point2d } from "../../../shared/math2d/Point2d";
 import { ViewTransform } from "../display/ViewTransform";
 import { CompoundCirclePhysicsObject } from "../physics/classes/CompoundCirclePhysicsObject";
 

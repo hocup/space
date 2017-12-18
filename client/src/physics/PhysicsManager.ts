@@ -4,7 +4,7 @@ import { ColliderTypes } from "./classes/ColliderTypes";
 import { CircleCollider } from "./classes/CircleCollider";
 import { ICollidingPair } from "./interfaces/ICollidingPair";
 import { CirclePhysicsObject } from "./classes/CirclePhysicsObject";
-import { Point2d } from "../math2d/Point2d";
+import { Point2d } from "../../../shared/math2d/Point2d";
 import { CompoundCircleCollider } from "./classes/CompoundCircleCollider";
 
 export class PhysicsManager {
@@ -15,6 +15,8 @@ export class PhysicsManager {
     inactiveObjects: IPhysicsObject[] = []; // Maybe
 
     broadPhase: NaiveCollisionFinder = new NaiveCollisionFinder();
+
+    frictionOn: boolean = true; // Mostly for testing
 
     constructor() {
         this.broadPhase.objects = this.activeObjects;
@@ -173,7 +175,9 @@ export class PhysicsManager {
         );
 
         // this.doGravity();
-        this.doFriction();
+        if(this.frictionOn) {
+            this.doFriction();
+        }
         
     }
 
