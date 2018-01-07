@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "@types/socket.io": "^1.4.31",
-    "assert": "^1.4.1",
-    "socket.io": "^2.0.4"
+    "assert": "^1.4.1"
   },
   "devDependencies": {
     "@types/assert": "0.0.31",
     "@types/mocha": "^2.2.43",
     "@types/node": "^8.0.31",
+    "@types/socket.io-client": "^1.4.32",
     "mocha-loader": "^1.1.1",
     "mocha": "^3.0.0",
     "ts-loader": "^3.0.2",

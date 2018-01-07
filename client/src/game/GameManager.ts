@@ -9,6 +9,7 @@ import { SeedObject } from "./SeedObject";
 import { LongStickObject } from "./LongStickObject";
 import { InputManager, InputChangeEvent } from "./InputManager";
 import { PlayerShipObject } from "./PlayerShipObject";
+import { NetworkManager } from "../network/NetworkManager";
 
 export class GameManager {
 
@@ -17,6 +18,7 @@ export class GameManager {
     physicsManager: PhysicsManager;
     viewManager: ViewManager;
     inputManager: InputManager;
+    networkManager: NetworkManager;
 
     physicsTimeStep: number = 0.025; // In seconds
     lastTimeStamp: number;
@@ -37,6 +39,9 @@ export class GameManager {
                 }
             }
         );
+
+        this.networkManager = new NetworkManager();
+        this.networkManager.establishConnection();
 
         // // for(let i = 0; i < 1; i++){
         for(let i = 0; i < 300; i++) {

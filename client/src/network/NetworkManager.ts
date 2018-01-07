@@ -6,11 +6,17 @@ import { ObjectType } from "../../../shared/ObjectType";
 // Set up the network stuff: establish a con
 
 export class NetworkManager {
-    connection: any;
+    connection: SocketIOClient.Socket;
 
     constructor(){}
 
-    establishConnection(){}
+    establishConnection() {
+        this.connection = io.connect();
+        this.connection.on('news', (data: any) => {
+            console.log(data);
+            this.connection.emit('my other event', { my: 'COOL NEW DATA' });
+        });
+    }
 
     sendUpdate(){}
 
