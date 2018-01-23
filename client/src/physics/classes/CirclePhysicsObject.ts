@@ -11,6 +11,10 @@ export class CirclePhysicsObject implements IPhysicsObject {
     }
 
     set position(v: Point2d) {
+        if(this._position && !this._position.isEqual(v, 0.01)) {
+            this.hasUpdate = true;
+        }
+
         this._position = v;
         if(this.collider) {
             this.collider.center = v;
@@ -23,6 +27,9 @@ export class CirclePhysicsObject implements IPhysicsObject {
     angularVelocity: number = 0;
 
     mass: number;
+
+    hasUpdate: boolean = false;
+
     collider: CircleCollider;
 
     constructor(pos: Point2d = new Point2d(0,0), radius: number = 5, mass: number = 1) {
@@ -37,6 +44,10 @@ export class CirclePhysicsObject implements IPhysicsObject {
         //TODO: Handle off-center collisions
         
         this.velocity = this.velocity.add(impulse.scale(1/this.mass));
+        if(impulse.getLength() > 0.01) {
+            this.hasUpdate = true;
+        }
+        // this.hasUpdate = true;
         
     }
 }

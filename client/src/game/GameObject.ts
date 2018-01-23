@@ -44,6 +44,10 @@ export class GameObject {
             
             objectRef.css("top", topValue + "px");
             objectRef.css("left", leftValue + "px");
+
+            // console.log("drawing obj", this.physicsObject.hasUpdate)
+
+            objectRef.css("background-color", this.physicsObject.hasUpdate ? 'green' : 'red');
         }
     }
 

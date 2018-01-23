@@ -28,6 +28,15 @@ class Point2d {
         }
         return new Point2d(this.x / length, this.y / length);
     }
+    clamp(length) {
+        let currentLength = this.getLength();
+        if (currentLength > length) {
+            return this.getNormalized().scale(length);
+        }
+        else {
+            return new Point2d(this.x, this.y);
+        }
+    }
     rotate(angle) {
         let nx = this.x * Math.cos(angle) - this.y * Math.sin(angle);
         let ny = this.x * Math.sin(angle) + this.y * Math.cos(angle);
@@ -37,7 +46,13 @@ class Point2d {
         return new Point2d(this.x, this.y);
     }
     isEqual(p, fuzz = 0) {
-        return Math.pow(p.x - this.x, 2) + Math.pow(p.y - this.y, 2) <= fuzz;
+        if (p) {
+            return Math.pow(p.x - this.x, 2) + Math.pow(p.y - this.y, 2) <= fuzz;
+        }
+        else {
+            console.log("HAVE BLANK p");
+            return false;
+        }
     }
 }
 exports.Point2d = Point2d;

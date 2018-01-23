@@ -11,5 +11,7 @@ export class ServerGameObject {
     angularPosition: number = 0;
     angularVelocity: number = 0;
 
+    mass: number = 300;
+
     constructor(){}
 }

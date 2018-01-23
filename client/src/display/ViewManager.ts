@@ -17,6 +17,9 @@ export class ViewManager implements IPhysicsObject{
     angularPosition: number = 0;
     angularVelocity: number = 0;
     mass: number = 1;
+
+    hasUpdate: boolean = false;
+
     collider: ICollider;
     applyImpulse(pos: Point2d, impulse: Point2d){
         //TODO?
@@ -37,6 +40,10 @@ export class ViewManager implements IPhysicsObject{
     }
 
     step(dt:number) {
+        if(dt > 100) {
+            // console.log(dt);
+            dt = 75;
+        }
 
         // Do a spring towards the followed object
         let k = 0.00007;
@@ -45,6 +52,7 @@ export class ViewManager implements IPhysicsObject{
         let force: Point2d = this.follow.physicsObject.position
 	    .add(this.position.scale(-1)).scale(k*0.5).add(this.velocity.scale(-d));
         this.velocity = this.velocity.add(force.scale(dt/this.mass));
+        // this.velocity = this.velocity.clamp(100);
         this.position = this.position.add(this.velocity.scale(dt));
  
         // this.transform.position.x = this.follow.physicsObject.position.x;

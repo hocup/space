@@ -12,6 +12,9 @@ export interface IPhysicsObject {
 
     mass: number;
 
+    // This should be changed by the physics manager
+    hasUpdate: boolean;
+
     collider: ICollider;
 
     // TODO: Decorator? Make this into a class? Gotta find a good way to generalize this function

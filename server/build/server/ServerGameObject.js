@@ -8,6 +8,7 @@ class ServerGameObject {
         this.velocity = new Point2d_1.Point2d(0, 0);
         this.angularPosition = 0;
         this.angularVelocity = 0;
+        this.mass = 300;
     }
 }
 exports.ServerGameObject = ServerGameObject;

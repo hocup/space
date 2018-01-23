@@ -20,7 +20,10 @@ export class GameManager {
     inputManager: InputManager;
     networkManager: NetworkManager;
 
+    networkUpdate: GameObject[];
+
     physicsTimeStep: number = 0.025; // In seconds
+    networkTimeStep: number = 0.07; // TODO
     lastTimeStamp: number;
 
     paused = false;
@@ -33,7 +36,7 @@ export class GameManager {
 
         this.inputManager.inputStateChanged.subscribe(
             (event: InputChangeEvent) => {
-                console.log("input change", event);
+                // console.log("input change", event);
                 if(event.newState.state.togglePause) {
                     this.togglePause();
                 }
@@ -43,21 +46,24 @@ export class GameManager {
         this.networkManager = new NetworkManager();
         this.networkManager.establishConnection();
 
-        // // for(let i = 0; i < 1; i++){
-        for(let i = 0; i < 300; i++) {
-            let newObject = new GameObject(null);
-            newObject.physicsObject = new CirclePhysicsObject();
-            newObject.physicsObject.position = new Point2d( (i%20) * 30 + 40, 50 + 30 * (Math.floor(i/20)));
-            newObject.physicsObject.velocity = new Point2d(50*Math.random(), 20*Math.random());
-            newObject.physicsObject.mass = 400;
-            this.objects.push(newObject);
-        }
+        this.networkManager.requestInitialState().then(
+            (objs: GameObject[]) => {
+                this.objects = this.objects.concat(objs);
+                this.objects.map(
+                    (o) => {
+                        this.physicsManager.activeObjects.push(o.physicsObject);
+                        this.viewManager.viewObjects.push(o);
+                    }
+                );
 
-        let testBall = new GameObject(null);
-        testBall.physicsObject = new CirclePhysicsObject();
-        testBall.physicsObject.position = new Point2d(6*3, 9);
-        testBall.physicsObject.mass = 5;
-        this.objects.push(testBall);
+                this.networkManager.serverObjectsStateUpdate.subscribe(
+                    (objects: GameObject[]) => {
+                        this.networkUpdate = objects;
+                    }
+                );
+            }
+        );
+
 
         let testPlayer = new PlayerShipObject();
         this.inputManager.inputStateChanged.subscribe(
@@ -68,13 +74,6 @@ export class GameManager {
 
         this.objects.push(testPlayer);
         this.viewManager.follow = testPlayer;
-
-        this.objects.map(
-            (o) => {
-                this.physicsManager.activeObjects.push(o.physicsObject);
-                this.viewManager.viewObjects.push(o);
-            }
-        );
 
         this.lastTimeStamp = new Date().getTime();
         setTimeout(this.tick, this.physicsTimeStep*1000);
@@ -89,14 +88,36 @@ export class GameManager {
         this.viewManager.step(timePassed);
 
         this.viewManager.draw();
+
+        
+        if(this.networkUpdate) {
+            for(let i in this.networkUpdate) {
+                let no = this.networkUpdate[i];
+                let o = this.objects.find(o => o.id == this.networkUpdate[i].id);
+                if(o) {
+                    o.physicsObject.position = no.physicsObject.position;
+                    o.physicsObject.velocity = no.physicsObject.velocity;
+                } else {
+                    this.objects.push(no);
+                }
+            }
+
+            this.networkUpdate = null;
+        }
+
+        // TODO: Find only the objects that have had a state change since last time
+        this.networkManager.sendUpdate(this.objects.filter(o => o.physicsObject.hasUpdate));
+        this.objects.map(
+            (o) => {
+                o.physicsObject.hasUpdate = false;
+            }
+        );
         
         this.physicsManager.step(this.physicsTimeStep);
         for(let i = 0; i < this.objects.length; i++) {
             this.objects[i].step(timePassed);
         }
 
-        
-        // console.log(timePassed);
         if(!this.paused) {
             setTimeout(this.tick, this.physicsTimeStep*1000);
         }

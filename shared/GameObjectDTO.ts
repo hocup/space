@@ -5,4 +5,9 @@ import { ObjectType } from "./ObjectType";
 export class GameObjectDTO {
     id: string;
     type: ObjectType;
+    position: {x: number, y: number};
+    velocity: {x: number, y: number};
+    angularPosition: number;
+    angularVelocity: number;
+    mass: number;
 }

@@ -29,7 +29,7 @@ export class PhysicsManager {
 
         // Move everything active
         this.activeObjects.map(
-            (o) => {
+            (o: IPhysicsObject) => {
                 o.position = o.position.add(o.velocity.scale(dt));
                 o.angularPosition = o.angularPosition + dt*o.angularVelocity;
             }

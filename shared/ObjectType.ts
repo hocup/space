@@ -1,5 +1,6 @@
 export enum ObjectType {
     PLAYER_SHIP_OBJECT,
     SEED_OBJECT,
-    TRIANGLE_OBJECT
+    TRIANGLE_OBJECT,
+    BORING_CIRCLE_OBJECT
 }

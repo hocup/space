@@ -38,6 +38,8 @@ export class CompoundCirclePhysicsObject implements IPhysicsObject {
     mass: number = 1;
     momentOfInertia: number = 10;
 
+    hasUpdate: boolean = false;
+
     collider: CompoundCircleCollider;
 
     applyImpulse(pos: Point2d, impulse: Point2d) {

@@ -1,6 +1,11 @@
 import { Request, Response } from "express-serve-static-core";
 import { Point2d } from "../shared/math2d/Point2d";
+import { NetworkMessageStrings } from "../shared/NetworkMessageStrings";
+import { ObjectType } from "../shared/ObjectType";
+import { GameObjectDTO } from '../shared/GameObjectDTO';
+
 import { ServerGameObject } from "./ServerGameObject";
+import { setInterval } from "timers";
 
 let express = require('express');
 let app = express();
@@ -8,6 +13,8 @@ let server = require('http').Server(app);
 let io = require('socket.io')(server);
 
 server.listen(3010);
+
+let clients: SocketIO.Socket[] = [];
 
 // Set up express
 //TODO: Make this only serve the files needed
@@ -19,11 +26,56 @@ io.on('connection', function (socket: SocketIO.Socket) {
     socket.on('my other event', function (data: any) {
         console.log(data);
     });
+
+    console.log(NetworkMessageStrings.clientInitRequest);
+
+    socket.on(NetworkMessageStrings.clientInitRequest, (data: any) => {
+        console.log("Have a initializaton request", data);
+        socket.emit(NetworkMessageStrings.clientInitResponse, objects);
+    });
+
+    socket.on(NetworkMessageStrings.clientObjectStateUpdate, (data: GameObjectDTO[]) => {
+        console.log("Got an update from a client", data.length);
+        data.map(
+            (objectUpdate: GameObjectDTO) => {
+                if(objects[objectUpdate.id]) {
+                    objects[objectUpdate.id].position.x = objectUpdate.position.x;
+                    objects[objectUpdate.id].position.y = objectUpdate.position.y;
+
+                    objects[objectUpdate.id].velocity.x = objectUpdate.velocity.x;
+                    objects[objectUpdate.id].velocity.y = objectUpdate.velocity.y;
+                }
+            }
+        );
+
+    });
+
+    socket.on(NetworkMessageStrings.clientObjectsAdded, (data: GameObjectDTO[]) => {
+        console.log("Got a set of new objects from a client", data.length);
+        data.map(
+            (godto: GameObjectDTO) => {
+                //TODO: This should probably be handles elsewhere. 
+                let newObj: ServerGameObject = new ServerGameObject();
+
+                newObj.type = godto.type;
+                newObj.id = godto.id;
+                newObj.position = new Point2d(godto.position.x, godto.position.y);
+                newObj.velocity = new Point2d(godto.velocity.x, godto.velocity.y);
+                newObj.angularPosition = godto.angularPosition;
+                newObj.angularVelocity = godto.angularVelocity;
+
+                //TODO: Confirm that this object id isn't already used
+                this.objects[newObj.id] = newObj;
+            }
+        )
+    });
+
+    clients.push(socket);
 });
 
-
 // Set up some state managment code
-let objects: ServerGameObject[] = [];
+let objects: {[key: string] : ServerGameObject} = {};
+
 for(let i = 0; i < 100; i++) {
     let obj = new ServerGameObject();
 
@@ -32,8 +84,18 @@ for(let i = 0; i < 100; i++) {
         obj.id += alphabet.substr(Math.floor(Math.random()*alphabet.length), 1);
     }
 
-    objects.push(obj);
-}
-    // Create the initial setup or load it from DB
+    obj.type = ObjectType.BORING_CIRCLE_OBJECT;
+    obj.mass = 400;
 
-// Set up socket stuff to recieve and process updates from the clients
+    obj.position = new Point2d(Math.random()*600, Math.random()*600);
+
+    objects[obj.id] = obj;
+}
+
+setInterval(() => {
+    clients.forEach(
+        (sock: SocketIO.Socket) => {
+            sock.emit(NetworkMessageStrings.serverObjectStateUpdate, objects);
+        }
+    );
+}, 700);
