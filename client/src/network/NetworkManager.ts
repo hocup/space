@@ -20,10 +20,10 @@ export class NetworkManager {
     establishConnection() {
         this.connection = io.connect();
 
-        this.connection.on('news', (data: any) => {
-            console.log(data);
-            this.connection.emit('my other event', { my: 'COOL NEW DATA' });
-        });
+        // this.connection.on('news', (data: any) => {
+        //     console.log(data);
+        //     this.connection.emit('my other event', { my: 'COOL NEW DATA' });
+        // });
 
         this.connection.on(
             NetworkMessageStrings.serverObjectStateUpdate, (data: {[key: string] : GameObjectDTO}) => {
@@ -32,7 +32,8 @@ export class NetworkManager {
                     objArray.push(data[k]);
                 }
 
-                let gameObjects: GameObject[] = objArray.map(NetworkManager.deserializeGameObject);
+                //TODO: Handle issues with deserializing objects better
+                let gameObjects: GameObject[] = objArray.map(NetworkManager.deserializeGameObject).filter(o => o != null);
                 this.serverObjectsStateUpdate.emit(gameObjects);
             }
         );
@@ -43,12 +44,12 @@ export class NetworkManager {
         this.connection.emit(NetworkMessageStrings.clientObjectStateUpdate, serializedObjects);
     }
 
-    requestUpdate(){}
+    // requestUpdate(){}
 
     requestInitialState() {
         return new Promise(
             (resolve, reject) => {
-                console.log("Requesting initial data", NetworkMessageStrings.clientInitRequest);
+                // console.log("Requesting initial data", NetworkMessageStrings.clientInitRequest);
 
                 //TODO: send over user information
                 this.connection.emit(NetworkMessageStrings.clientInitRequest, {user: "todo"});
@@ -72,29 +73,43 @@ export class NetworkManager {
         );
     }
 
+    addObject(go: GameObject) {
+        let dto = NetworkManager.serializeGameObject(go);
+        this.connection.emit(NetworkMessageStrings.clientObjectsAdded, [dto]);
+    }
+
     static serializeGameObject(object: GameObject): GameObjectDTO {
         let out = new GameObjectDTO();
         // TODO: reconsider sending the whole object
         out.id = object.id;
+        out.type = object.objectType;
         out.position = object.physicsObject.position;
         out.velocity = object.physicsObject.velocity;
+        out.angularPosition = object.physicsObject.angularPosition;
+        out.angularVelocity = object.physicsObject.angularVelocity;
 
         return out;
     }
 
     static deserializeGameObject(objectData: GameObjectDTO): GameObject {
+        
         let obj: GameObject;
         switch(objectData.type) {
             case ObjectType.PLAYER_SHIP_OBJECT:
-            
                 let playerObj = new PlayerShipObject();
                 playerObj.id = objectData.id;
+                playerObj.physicsObject.angularPosition = objectData.angularPosition ? objectData.angularPosition : 0;
+                playerObj.physicsObject.angularVelocity = objectData.angularVelocity ? objectData.angularVelocity : 0;
+                playerObj.physicsObject.position = new Point2d(objectData.position.x, objectData.position.y);
+                playerObj.physicsObject.velocity = new Point2d(objectData.velocity.x, objectData.velocity.y);
 
                 obj = playerObj;
                 break;
             case ObjectType.BORING_CIRCLE_OBJECT:
                 let circleObj = new GameObject(objectData.id);
                 circleObj.physicsObject = new CirclePhysicsObject();
+                circleObj.physicsObject.angularPosition = objectData.angularPosition ? objectData.angularPosition : 0;
+                circleObj.physicsObject.angularVelocity = objectData.angularVelocity ? objectData.angularVelocity : 0;
                 circleObj.physicsObject.position = new Point2d(objectData.position.x, objectData.position.y);
                 circleObj.physicsObject.velocity = new Point2d(objectData.velocity.x, objectData.velocity.y);
                 circleObj.physicsObject.mass = objectData.mass;
@@ -106,7 +121,10 @@ export class NetworkManager {
 
         if(obj) {
             obj.id = objectData.id;
+        } else {
+            // console.log("Deserialization issue", objectData);
         }
+
         return obj;
     }
 }

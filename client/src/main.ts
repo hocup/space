@@ -4,8 +4,6 @@ import { GameObject } from "./game/GameObject";
 import { GameManager } from "./game/GameManager";
 
 
-console.log("This is the main file!");
-
 let entryPoint = () => {
     let gameManager = new GameManager();
     

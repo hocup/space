@@ -57,7 +57,7 @@ export class Point2d {
         if(p) {
             return Math.pow(p.x-this.x, 2) + Math.pow(p.y-this.y,2) <= fuzz;
         } else {
-            console.log("HAVE BLANK p");
+            
             return false;
         }
     }

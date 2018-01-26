@@ -10,6 +10,7 @@ import { LongStickObject } from "./LongStickObject";
 import { InputManager, InputChangeEvent } from "./InputManager";
 import { PlayerShipObject } from "./PlayerShipObject";
 import { NetworkManager } from "../network/NetworkManager";
+import { ObjectType } from "../../../shared/ObjectType";
 
 export class GameManager {
 
@@ -51,6 +52,7 @@ export class GameManager {
                 this.objects = this.objects.concat(objs);
                 this.objects.map(
                     (o) => {
+                        // console.log("Have an object", o)
                         this.physicsManager.activeObjects.push(o.physicsObject);
                         this.viewManager.viewObjects.push(o);
                     }
@@ -72,11 +74,20 @@ export class GameManager {
             }
         );
 
+        this.networkManager.addObject(testPlayer);
+
         this.objects.push(testPlayer);
         this.viewManager.follow = testPlayer;
 
         this.lastTimeStamp = new Date().getTime();
         setTimeout(this.tick, this.physicsTimeStep*1000);
+    }
+
+    addObject(object: GameObject) {
+        this.objects.push(object);
+        this.networkManager.addObject(object);
+        this.viewManager.viewObjects.push(object);
+        this.physicsManager.activeObjects.push(object.physicsObject);
     }
 
     tick = () => {
@@ -95,28 +106,35 @@ export class GameManager {
                 let no = this.networkUpdate[i];
                 let o = this.objects.find(o => o.id == this.networkUpdate[i].id);
                 if(o) {
+                    
                     o.physicsObject.position = no.physicsObject.position;
                     o.physicsObject.velocity = no.physicsObject.velocity;
+                    o.physicsObject.angularPosition = no.physicsObject.angularPosition;
+                    o.physicsObject.angularVelocity = no.physicsObject.angularVelocity;
                 } else {
-                    this.objects.push(no);
+                    
+                    this.addObject(no);
                 }
             }
 
             this.networkUpdate = null;
         }
 
-        // TODO: Find only the objects that have had a state change since last time
+        this.physicsManager.step(this.physicsTimeStep);
+        for(let i = 0; i < this.objects.length; i++) {
+            if(!this.objects[i]) {
+                console.log("pausing");
+                this.paused = true;
+            }
+            this.objects[i].step(timePassed);
+        }
+
         this.networkManager.sendUpdate(this.objects.filter(o => o.physicsObject.hasUpdate));
         this.objects.map(
             (o) => {
                 o.physicsObject.hasUpdate = false;
             }
         );
-        
-        this.physicsManager.step(this.physicsTimeStep);
-        for(let i = 0; i < this.objects.length; i++) {
-            this.objects[i].step(timePassed);
-        }
 
         if(!this.paused) {
             setTimeout(this.tick, this.physicsTimeStep*1000);

@@ -3,11 +3,14 @@ import { IPhysicsObject } from "../physics/interfaces/IPhysicsObject";
 import { ViewTransform } from "../display/ViewTransform";
 import { Point2d } from "../../../shared/math2d/Point2d";
 import { GameObjectDTO } from "../../../shared/GameObjectDTO";
+import { ObjectType } from "../../../shared/ObjectType";
 
 export class GameObject {
 
     id: string;
     physicsObject: IPhysicsObject;
+
+    objectType: ObjectType;
 
     constructor(id: string) {
         if(!id) {
@@ -44,10 +47,6 @@ export class GameObject {
             
             objectRef.css("top", topValue + "px");
             objectRef.css("left", leftValue + "px");
-
-            // console.log("drawing obj", this.physicsObject.hasUpdate)
-
-            objectRef.css("background-color", this.physicsObject.hasUpdate ? 'green' : 'red');
         }
     }
 

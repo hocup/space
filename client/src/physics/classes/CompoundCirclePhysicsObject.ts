@@ -12,6 +12,10 @@ export class CompoundCirclePhysicsObject implements IPhysicsObject {
         return this._angularPosition;
     }
     set angularPosition(v: number) {
+        if(Math.abs(this._angularPosition - v) > 0.001) {
+            this.hasUpdate = true;
+        }
+
         this.collider.setRotation(v);
         this._angularPosition = v;
         this.collider.updateCollider();
@@ -24,6 +28,10 @@ export class CompoundCirclePhysicsObject implements IPhysicsObject {
         return this._position;
     }
     set position(v: Point2d) {
+        if(this._position && !this._position.isEqual(v, 0.01)) {
+            this.hasUpdate = true;
+        }
+
         this.collider.setPosition(v);
         this._position = v;
         this.collider.updateCollider();
@@ -50,5 +58,9 @@ export class CompoundCirclePhysicsObject implements IPhysicsObject {
         this.angularVelocity += angularImp/this.momentOfInertia;
         
         this.velocity = this.velocity.add(impulse.scale(1/this.mass));
+
+        if(impulse.getLength() > 0.01) {
+            this.hasUpdate = true;
+        }
     }
 }

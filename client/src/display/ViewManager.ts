@@ -28,7 +28,7 @@ export class ViewManager implements IPhysicsObject{
     }
 
     constructor(public containerId:string) {
-        console.log(this.containerId);
+        // console.log(this.containerId);
     }
 
     

@@ -22,28 +22,30 @@ app.use('/', express.static('../client'));
 
 io.on('connection', function (socket: SocketIO.Socket) {
     let newPt = new Point2d(0,0);
-    socket.emit('news', { hello: 'world', pt: objects });
-    socket.on('my other event', function (data: any) {
-        console.log(data);
-    });
-
-    console.log(NetworkMessageStrings.clientInitRequest);
+    // socket.emit('news', { hello: 'world', pt: objects });
+    // socket.on('my other event', function (data: any) {
+    //     console.log(data);
+    // });
 
     socket.on(NetworkMessageStrings.clientInitRequest, (data: any) => {
-        console.log("Have a initializaton request", data);
+        // console.log("Have a initializaton request", data);
         socket.emit(NetworkMessageStrings.clientInitResponse, objects);
     });
 
     socket.on(NetworkMessageStrings.clientObjectStateUpdate, (data: GameObjectDTO[]) => {
-        console.log("Got an update from a client", data.length);
+        // console.log("Got an update from a client", data.length);
         data.map(
             (objectUpdate: GameObjectDTO) => {
                 if(objects[objectUpdate.id]) {
+                    
                     objects[objectUpdate.id].position.x = objectUpdate.position.x;
                     objects[objectUpdate.id].position.y = objectUpdate.position.y;
 
                     objects[objectUpdate.id].velocity.x = objectUpdate.velocity.x;
                     objects[objectUpdate.id].velocity.y = objectUpdate.velocity.y;
+
+                    objects[objectUpdate.id].angularPosition = objectUpdate.angularPosition;
+                    objects[objectUpdate.id].angularVelocity = objectUpdate.angularVelocity;
                 }
             }
         );
@@ -51,10 +53,10 @@ io.on('connection', function (socket: SocketIO.Socket) {
     });
 
     socket.on(NetworkMessageStrings.clientObjectsAdded, (data: GameObjectDTO[]) => {
-        console.log("Got a set of new objects from a client", data.length);
+        
         data.map(
             (godto: GameObjectDTO) => {
-                //TODO: This should probably be handles elsewhere. 
+                //TODO: This should probably be handled elsewhere. 
                 let newObj: ServerGameObject = new ServerGameObject();
 
                 newObj.type = godto.type;
@@ -65,7 +67,7 @@ io.on('connection', function (socket: SocketIO.Socket) {
                 newObj.angularVelocity = godto.angularVelocity;
 
                 //TODO: Confirm that this object id isn't already used
-                this.objects[newObj.id] = newObj;
+                objects[newObj.id] = newObj;
             }
         )
     });
@@ -76,7 +78,7 @@ io.on('connection', function (socket: SocketIO.Socket) {
 // Set up some state managment code
 let objects: {[key: string] : ServerGameObject} = {};
 
-for(let i = 0; i < 100; i++) {
+for(let i = 0; i < 10; i++) {
     let obj = new ServerGameObject();
 
     let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
