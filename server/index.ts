@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Request, Response } from "express-serve-static-core";
 import { Point2d } from "../shared/math2d/Point2d";
 import { NetworkMessageStrings } from "../shared/NetworkMessageStrings";

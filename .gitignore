@@ -1,6 +1,9 @@
 client/build/**/*
 client/node_modules/**/*
 client/src/**/*.js
+
 server/node_modules/**/*
 server/**/*.js
 server/build/**/*
+
+space.service

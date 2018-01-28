@@ -16,6 +16,8 @@ export class GameManager {
 
     objects: GameObject[] = [];
 
+    playerObject: GameObject;
+
     physicsManager: PhysicsManager;
     viewManager: ViewManager;
     inputManager: InputManager;
@@ -68,6 +70,10 @@ export class GameManager {
 
 
         let testPlayer = new PlayerShipObject();
+        this.playerObject = testPlayer;
+        // this.addObject(testPlayer);
+
+
         this.inputManager.inputStateChanged.subscribe(
             (e: InputChangeEvent) => {
                 testPlayer.inputStateChanged(e.newState);
@@ -75,8 +81,8 @@ export class GameManager {
         );
 
         this.networkManager.addObject(testPlayer);
-
         this.objects.push(testPlayer);
+
         this.viewManager.follow = testPlayer;
 
         this.lastTimeStamp = new Date().getTime();
@@ -99,13 +105,15 @@ export class GameManager {
         this.viewManager.step(timePassed);
 
         this.viewManager.draw();
-
         
         if(this.networkUpdate) {
             for(let i in this.networkUpdate) {
                 let no = this.networkUpdate[i];
                 let o = this.objects.find(o => o.id == this.networkUpdate[i].id);
-                if(o) {
+                
+                if(this.playerObject && o && this.playerObject.id == o.id) {
+                    // update for self, do nothing!
+                } else if(o) {
                     
                     o.physicsObject.position = no.physicsObject.position;
                     o.physicsObject.velocity = no.physicsObject.velocity;
